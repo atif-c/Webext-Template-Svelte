@@ -1,0 +1,11 @@
+html,
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#popup {
+    min-width: 450px;
+    max-width: 450px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
