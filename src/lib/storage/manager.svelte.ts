@@ -53,7 +53,9 @@ async function loadState() {
 const saveState = debounce(
     async () => {
         try {
-            await getStorageArea().set($state.snapshot(storage));
+            await getStorageArea().set(
+                cleanObject($state.snapshot(storage), defaultStorageObject)
+            );
             console.log('Storage saved');
         } catch (err) {
             console.error('Failed to save to storage:', err);
