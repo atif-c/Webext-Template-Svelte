@@ -132,6 +132,7 @@ npm run watch:chromium  # Watch and rebuild changes for Chromium
 ### Storage
 
 -   **`src/lib/storage/default-object.ts`** - Holds the default storage object used for validation
+-   **`src/lib/storage/state-manager.svelte.ts`** - Generic state management class for managing reactive object state with automatic persistence.
 -   **`src/lib/storage/manager.svelte.ts`** - Provides a $state variable variable linked to persistent storage, automatically loads data on start, saves changes back to storage, and validates data to prevent loading or saving malformed values
 -   **`src/lib/storage/utils.ts`** - Handles a variable that defines whether browser.storage should use local or sync storage, and provides the cleanObject function for data validation
 
