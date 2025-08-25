@@ -1,17 +1,20 @@
 <script lang="ts">
-    import { storage } from '@src/lib/storage/manager.svelte';
+    import { state } from '@src/lib/storage/manager.svelte';
 
-    const incrementCount = () => (storage.count += 1);
+    const incrementCount = () => (state.count += 1);
 </script>
 
 <button onclick={incrementCount}>Click Me</button>
 <p>
-    You have clicked the above button {storage.count} time{storage.count === 1
+    You have clicked the above button {state.count} time{state.count === 1
         ? ''
         : 's'}
 </p>
 
-<input type="number" bind:value={storage.count} />
+<input
+    type="number"
+    bind:value={state.count}
+/>
 
 <style>
     button {

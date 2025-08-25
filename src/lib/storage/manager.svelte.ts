@@ -1,25 +1,29 @@
-import {
-    defaultStorageObject,
-    type StorageObject,
-} from '@src/lib/storage/default-object';
+import { defaultStorageObject } from '@src/lib/storage/default-object';
+import { StateManager } from '@src/lib/storage/state-manager.svelte';
 import { cleanObject, getStorageArea } from '@src/lib/storage/utils';
-import { debounce } from '@src/lib/utils/debounce';
 
 let storageLoaded = false;
 let autoSaveEffectRegistered = false;
 
 // Reactive persistent storage variable initialised with default values
-export const storage = $state<StorageObject>({ ...defaultStorageObject });
+const stateManager = new StateManager<typeof defaultStorageObject>(
+    loadState,
+    saveState,
+    { delay: 500, maxWait: 1000 }
+);
+
+export const state = stateManager.state;
 
 // Immediately load from storage on module import
 (async () => {
     try {
-        await loadState();
+        await stateManager.load();
         storageLoaded = true;
 
         // Clean Up storage area
-        getStorageArea().clear();
-        getStorageArea().set(cleanObject(storage, defaultStorageObject));
+        getStorageArea().set(
+            cleanObject(stateManager.state!, defaultStorageObject)
+        );
     } catch (error) {
         console.error('Failed to load from storage:', error);
     }
@@ -35,31 +39,33 @@ export function initialiseStorageAutoSave() {
 
     $effect(() => {
         // Track deep changes
-        JSON.stringify(storage);
+        JSON.stringify(stateManager.state);
 
         if (!storageLoaded) return;
 
-        saveState();
+        stateManager.save();
     });
 }
 
-// Load from storage
-async function loadState() {
-    const raw = await getStorageArea().get();
-    Object.assign(storage, raw);
+async function loadState(): Promise<typeof defaultStorageObject> {
+    try {
+        const raw = (await getStorageArea().get()) as Partial<
+            typeof defaultStorageObject
+        >;
+
+        return cleanObject(raw, defaultStorageObject);
+    } catch (err) {
+        console.error('Failed to load from storage:', err);
+        throw err;
+    }
 }
 
-// Debounced save to reduce frequent storage writes
-const saveState = debounce(
-    async () => {
-        try {
-            await getStorageArea().set(
-                cleanObject($state.snapshot(storage), defaultStorageObject)
-            );
-            console.log('Storage saved');
-        } catch (err) {
-            console.error('Failed to save to storage:', err);
-        }
-    },
-    { delay: 500, maxWait: 1000 }
-);
+// Save function just triggers the debounced save
+async function saveState() {
+    try {
+        await getStorageArea().set($state.snapshot(stateManager.state));
+        console.log('Storage saved');
+    } catch (err) {
+        console.error('Failed to save to storage:', err);
+    }
+}
