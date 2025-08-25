@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { state } from '@src/lib/storage/manager.svelte';
+    import { state } from '@src/lib/storage/state.svelte';
 
     const incrementCount = () => (state.count += 1);
 </script>

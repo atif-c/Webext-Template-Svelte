@@ -1,6 +1,6 @@
 <script lang="ts">
     import Counter from '@src/lib/components/Counter.svelte';
-    import { initialiseStorageAutoSave } from '@src/lib/storage/manager.svelte';
+    import { initialiseStorageAutoSave } from '@src/lib/storage/state.svelte';
 
     initialiseStorageAutoSave();
 </script>
