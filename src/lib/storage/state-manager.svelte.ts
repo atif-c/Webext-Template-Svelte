@@ -49,7 +49,7 @@
  *   { delay: 500, maxWait: 2000 }
  * );
  *
- * // Initialize and use
+ * // Initialise and use
  * await settingsManager.load();
  * settingsManager.state.theme = 'light'; // Automatically triggers debounced save
  * ```
@@ -64,17 +64,17 @@ export class StateManager<T extends Record<string, unknown>> {
         immediate?: boolean;
     };
 
-    /** Debounced version of the save function, created during initialization */
+    /** Debounced version of the save function, created during initialisation */
     private debouncedSave = (): void => {};
 
     /**
      * Creates a new StateManager instance with load/save callbacks and debounce configuration.
      *
-     * @param loadCallback - Sync or async function that retrieves the initial state object.
-     * @param saveCallback - Optional sync or async function to persist state changes.
-     *   Receives a deep clone of the current state snapshot.
-     * @param debounceOptions - Configuration for debouncing save operations.
-     *   Defaults: `{ delay: 0, maxWait: 0, immediate: false }`.
+     * @param loadCallback - Sync or async function that retrieves the initial state object
+     * @param saveCallback - Optional sync or async function to persist state changes
+     *   Receives a deep clone of the current state snapshot
+     * @param debounceOptions - Configuration for debouncing save operations
+     *   Defaults: `{ delay: 0, maxWait: 0, immediate: false }`
      *
      * @throws {Error} Re-throws any errors encountered during debounce function setup
      *
@@ -134,7 +134,7 @@ export class StateManager<T extends Record<string, unknown>> {
      * @example
      * ```typescript
      * const manager = new StateManager(loadFn, saveFn);
-     * await manager.load(); // Initialize state from storage
+     * await manager.load(); // Initialise state from storage
      * console.log(manager.state); // Now contains loaded data
      * ```
      */
@@ -190,8 +190,8 @@ export class StateManager<T extends Record<string, unknown>> {
      *
      * Useful for reducing frequent async operations such as saving to storage.
      *
-     * @template T - The async function type to debounce
-     * @param {T} fn - The async function to debounce
+     * @template T - Async function type to debounce
+     * @param {T} fn - Async function to debounce
      * @param {object} [options] - Configuration options
      * @param {boolean} [options.immediate=false] - If true, trigger on the leading call
      * @param {number} [options.delay=1000] - Delay in milliseconds before invoking after last call
