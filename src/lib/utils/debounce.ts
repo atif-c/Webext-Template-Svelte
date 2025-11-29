@@ -6,8 +6,8 @@
  *
  * Useful for reducing frequent async operations such as saving to storage.
  *
- * @template T - The async function type to debounce
- * @param {T} fn - The async function to debounce
+ * @template T - Async function type to debounce
+ * @param {T} fn - Async function to debounce
  * @param {object} [options] - Configuration options
  * @param {boolean} [options.immediate=false] - If true, trigger on the leading call
  * @param {number} [options.delay=1000] - Delay in milliseconds before invoking after last call
