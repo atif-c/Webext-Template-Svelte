@@ -1,6 +1,6 @@
 {
-    "background": {
-        "service_worker": "entries/background.js",
-        "type": "module"
-    }
+	"background": {
+		"service_worker": "entries/background.js",
+		"type": "module"
+	}
 }

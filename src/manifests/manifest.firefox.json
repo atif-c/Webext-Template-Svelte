@@ -1,11 +1,11 @@
 {
-    "background": {
-        "scripts": ["entries/background.js"],
-        "type": "module"
-    },
-    "browser_specific_settings": {
-        "gecko": {
-            "id": "my-web-extension@me"
-        }
-    }
+	"background": {
+		"scripts": ["entries/background.js"],
+		"type": "module"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "my-web-extension@me"
+		}
+	}
 }

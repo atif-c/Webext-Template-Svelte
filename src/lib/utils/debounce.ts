@@ -24,71 +24,71 @@
  * const onScroll = debounce(async () => { ... }, { delay: 200, immediate: true });
  */
 export const debounce = <T extends (...args: any[]) => Promise<any>>(
-    fn: T,
-    {
-        immediate = false,
-        delay = 1000,
-        maxWait,
-    }: { immediate?: boolean; delay?: number; maxWait?: number } = {}
+	fn: T,
+	{
+		immediate = false,
+		delay = 1000,
+		maxWait
+	}: { immediate?: boolean; delay?: number; maxWait?: number } = {}
 ): ((...args: Parameters<T>) => void) => {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-    let maxTimeout: ReturnType<typeof setTimeout> | null = null;
-    let lastInvokeTime = 0;
-    let firstCallTime = 0;
-    let pendingArgs: Parameters<T> | null = null;
+	let timeout: ReturnType<typeof setTimeout> | null = null;
+	let maxTimeout: ReturnType<typeof setTimeout> | null = null;
+	let lastInvokeTime = 0;
+	let firstCallTime = 0;
+	let pendingArgs: Parameters<T> | null = null;
 
-    const invoke = () => {
-        if (!pendingArgs) return;
-        fn(...pendingArgs);
-        lastInvokeTime = Date.now();
-        firstCallTime = 0;
-        pendingArgs = null;
-    };
+	const invoke = () => {
+		if (!pendingArgs) return;
+		fn(...pendingArgs);
+		lastInvokeTime = Date.now();
+		firstCallTime = 0;
+		pendingArgs = null;
+	};
 
-    const startMaxWaitTimer = () => {
-        if (maxTimeout) return; // Already running
-        if (maxWait === undefined) return;
+	const startMaxWaitTimer = () => {
+		if (maxTimeout) return; // Already running
+		if (maxWait === undefined) return;
 
-        const timeSinceFirstCall = Date.now() - firstCallTime;
-        const timeLeft = maxWait - timeSinceFirstCall;
+		const timeSinceFirstCall = Date.now() - firstCallTime;
+		const timeLeft = maxWait - timeSinceFirstCall;
 
-        maxTimeout = setTimeout(() => {
-            if (timeout) {
-                clearTimeout(timeout);
-                timeout = null;
-            }
-            invoke();
-            maxTimeout = null;
-        }, timeLeft);
-    };
+		maxTimeout = setTimeout(() => {
+			if (timeout) {
+				clearTimeout(timeout);
+				timeout = null;
+			}
+			invoke();
+			maxTimeout = null;
+		}, timeLeft);
+	};
 
-    return (...args: Parameters<T>) => {
-        pendingArgs = args;
+	return (...args: Parameters<T>) => {
+		pendingArgs = args;
 
-        const now = Date.now();
+		const now = Date.now();
 
-        if (firstCallTime === 0) {
-            firstCallTime = now;
-        }
+		if (firstCallTime === 0) {
+			firstCallTime = now;
+		}
 
-        if (immediate && lastInvokeTime === 0) {
-            invoke();
-        }
+		if (immediate && lastInvokeTime === 0) {
+			invoke();
+		}
 
-        if (timeout) {
-            clearTimeout(timeout);
-        }
-        timeout = setTimeout(() => {
-            if (!immediate) {
-                invoke();
-            }
-            if (maxTimeout) {
-                clearTimeout(maxTimeout);
-                maxTimeout = null;
-            }
-            timeout = null;
-        }, delay);
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+		timeout = setTimeout(() => {
+			if (!immediate) {
+				invoke();
+			}
+			if (maxTimeout) {
+				clearTimeout(maxTimeout);
+				maxTimeout = null;
+			}
+			timeout = null;
+		}, delay);
 
-        startMaxWaitTimer();
-    };
+		startMaxWaitTimer();
+	};
 };
